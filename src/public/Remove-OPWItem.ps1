@@ -54,12 +54,12 @@ function Remove-OPWItem {
         $opwr = Get-OPWItem -Title $Title -VaultUUID $VaultUUID
         
         if ($opwr.status -eq 200) {
-            $Id = $opwr.respons.id 
+            $Id = $opwr.payload.id 
            
         }
         else {
             $opwr.message = "Item cannot be removed. $($opwr.message)"
-            Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+            Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
             return $opwr
         }
     
@@ -71,7 +71,7 @@ function Remove-OPWItem {
     }
     else {
         $opwr = $_ | ConvertFrom-Json 
-        Write-Debug ("$($PSFN) Status: item $($Id) removed from vault. $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: item $($Id) removed from vault. $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     }
             
@@ -82,15 +82,15 @@ function Remove-OPWItem {
     }
     catch {
         $opwr = $_ | ConvertFrom-Json 
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     } 
         
     # Interpretation
     $opwr.status = 201
     $opwr.message = "item $($Id) removed from vault $($VaultUUID)"
-    $opwr.respons = $null
-    Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+    $opwr.payload = $null
+    Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
     return $opwr
  
 }

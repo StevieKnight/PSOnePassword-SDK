@@ -2,12 +2,12 @@
 class OPWRespons {
     [string] $status
     [string] $message
-    [System.Object] $respons
+    [System.Object] $payload
 
     OPWRespons() {
         $this.status = "200"
         $this.message= "Done"
-        $this.respons= $null
+        $this.payload= $null
     }
 }
 
@@ -27,8 +27,11 @@ class JSONPatchOPW {
     }
 
     hidden [string] OutJSONPatch() {
-
-        return ConvertTo-Json -InputObject $this.itmes 
+        $json = ConvertTo-Json -InputObject $this.itmes 
+        $json = $json -replace '\\', ''
+        $json= $json -replace '"{', '{'
+        $json= $json -replace '}"', '}'
+        return $json
     }
 }
 

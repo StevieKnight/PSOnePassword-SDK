@@ -39,7 +39,7 @@ function Add-OPWItem {
     
     if( "" -eq $VaultUUID){
         $VaultUUID = $InputObject.vault.id  
-        #s  
+        
     }
     
 
@@ -54,9 +54,9 @@ function Add-OPWItem {
 
     catch {
         $opwr = $_ | ConvertFrom-Json 
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     } 
-
-    return $respons
+    $opwr.payload = $respons
+    return $opwr
 }

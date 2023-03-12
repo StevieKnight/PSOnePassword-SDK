@@ -68,8 +68,8 @@ function Update-OPWItem {
    
     if ( $null -ne $InputObject)
     {
-        $jsonBody = $InputObject.OutJSONPatch()
-        Write-Debug ("$($PSFN) JSON: $($jsonBody)")        
+     $jsonBody = $InputObject.OutJSONPatch()
+     Write-Debug ("$($PSFN) JSON: $($jsonBody)")        
     
     } elseif ( ($path -match '([\/]{1}[a-z0-9.]+)+([a-z0-9.])$') -and ('' -ne $value) -and ('add', 'replace', 'remove').Contains($Operation)) {
 
@@ -82,7 +82,7 @@ function Update-OPWItem {
 
             $opwr.status = '402'
             $opwr.message = 'No vaild parameter to update funtion'
-            Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+            Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
             return $opwr
     } 
     
@@ -94,12 +94,12 @@ function Update-OPWItem {
     }
     catch {
         $opwr = $_ | ConvertFrom-Json 
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     } 
     
     #Interpretation
-    $opwr.respons = $respons
-    Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+    $opwr.payload = $respons
+    Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
     return $opwr
 }

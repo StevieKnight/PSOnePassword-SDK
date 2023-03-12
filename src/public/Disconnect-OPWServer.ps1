@@ -25,8 +25,6 @@ function Disconnect-OPWServer {
         $PSFN = "[$($MyInvocation.MyCommand)] "
     }
 
-    $opwr = New-Object -Type OPWRespons
-
     #OpwDebug
     if( Get-Variable -Name OpwDebug -ErrorAction SilentlyContinue) {
         Remove-Variable -Name OpwDebug -Scope Global
@@ -44,5 +42,5 @@ function Disconnect-OPWServer {
         Write-Debug "$($PSFN)Remove OpwAuthToken variable"
     } 
     
-    return $opwr
+
 }

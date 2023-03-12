@@ -7,7 +7,7 @@ function Get-OPWItem {
         Retrieve items from the vault using the exact title or with the ID of the item in the vault.  
     
     .PARAMETER ID
-        Specify the vault item ID
+        Specify the vault item ID to
 
     .PARAMETER UUID
         Specify the vault UUID.
@@ -70,7 +70,7 @@ function Get-OPWItem {
     }
     catch {
         $opwr = $_ | ConvertFrom-Json 
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     } 
         
@@ -78,8 +78,8 @@ function Get-OPWItem {
     # ID action 
     if (('' -ne $Id)) {
         $opwr.message = "item $($Id) found"
-        $opwr.respons = $respons
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        $opwr.payload = $respons
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     } 
         
@@ -88,7 +88,7 @@ function Get-OPWItem {
     if ($respons.Count -eq 0) {
         $opwr.status = 404
         $opwr.message = "item with title '$($Title)' not found" 
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     }
         
@@ -96,15 +96,15 @@ function Get-OPWItem {
     if (($respons.Count -gt 1) -and ("" -ne $Title)) {
         $opwr.status = 401
         $opwr.message = "Found $($respons.Count) items in vault $($VaultUUID) with title '$($Title)'. Please prefer to use UUID"
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
             
     } 
     if (($respons.Count -gt 1) -and ("" -eq $Title)) {
             
         $opwr.message = "Many items found in vault $($VaultUUID)."
-        $opwr.respons = $respons
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        $opwr.payload = $respons
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     }
         
@@ -113,8 +113,8 @@ function Get-OPWItem {
             
         $itemDetails = Get-OPWItem -id $respons.ID -VaultUUID $VaultUUID
         $opwr.message = "Found item in vault $($VaultUUID) with title '$($Title)'."
-        $opwr.respons = $itemDetails.respons
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        $opwr.payload = $itemDetails.payload
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     }
 }

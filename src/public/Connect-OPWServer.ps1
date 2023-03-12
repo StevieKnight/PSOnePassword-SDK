@@ -42,6 +42,7 @@ function Connect-OPWServer {
       
     If ($PSBoundParameters['Debug']) {
       $DebugPreference = 'Continue'
+      $VerbosePreference = 'Continue'
       New-Variable -Name OpwDebug -Scope Global -Value $True -Force:$True
       $PSFN = "[$($MyInvocation.MyCommand)] "
       Write-Debug "$($PSFN)Set OPWDebug as globle variable"
@@ -70,21 +71,21 @@ function Connect-OPWServer {
     catch {
       $opwr.status = '503'
       $opwr.message = 'Service Unavailable'
-      $opwr.respons = $_
-      Write-Debug ("$($PSFN)Status: $($opwr.status): $($opwr.message) $($opwr.respons)")
+      $opwr.payload = $_
+      Write-Debug ("$($PSFN)Status: $($opwr.status): $($opwr.message) $($opwr.payload)")
       return $opwr
     }
       
     if ($null -ne $respons) {
       $opwr.message = 'Service reachable'
-      Write-Debug ("$($PSFN)Status: $($opwr.status): $($opwr.message) $($opwr.respons)")
+      Write-Debug ("$($PSFN)Status: $($opwr.status): $($opwr.message) $($opwr.payload)")
       return $opwr
           
     }
     else {
       $opwr.status = '500'
       $opwr.message = 'Unknow Error'
-      Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)")
+      Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)")
       return $opwr
     }
 

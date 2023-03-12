@@ -33,12 +33,12 @@ function Get-OPWVaults {
     }
     catch {
         $opwr = $_ | ConvertFrom-Json 
-        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+        Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
         return $opwr
     } 
     
     #Interpretation
-    $opwr.respons = $respons
-    Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.respons)") 
+    $opwr.payload = $respons
+    Write-Debug ("$($PSFN) Status: $($opwr.status): $($opwr.message) $($opwr.payload)") 
     return $opwr
 }
