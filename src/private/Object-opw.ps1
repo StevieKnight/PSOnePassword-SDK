@@ -22,12 +22,12 @@ class JSONPatchOPW {
         $jp.op = $op
         $jp.path = $path
         $jp.value = $value
-    
+
         $this.itmes +=$jp
     }
 
     hidden [string] OutJSONPatch() {
-        $json = ConvertTo-Json -InputObject $this.itmes 
+        $json = ConvertTo-Json -InputObject $this.itmes
         $json = $json -replace '\\', ''
         $json= $json -replace '"{', '{'
         $json= $json -replace '}"', '}'
@@ -35,7 +35,7 @@ class JSONPatchOPW {
     }
 }
 
-# JSON operation object 
+# JSON operation object
 class JSONPatchOperation {
     [string] $op
     [string] $path
@@ -66,8 +66,8 @@ class OPWVaultItemSection {
 
 }
 
-# OPWVaultItem 
-# vault item object 
+# OPWVaultItem
+# vault item object
 class OPWVault {
     [string] $id
     [string] $name
@@ -78,29 +78,29 @@ class OPWVault {
 }
 
 # OPWVaultItem
-# URL item object 
+# URL item object
 class OPWVaultItemURL {
-    [bool]   $primary 
+    [bool]   $primary
 	[string] $label
-	[string] $url  
+	[string] $url
 }
 
 # OPWVaultItem
-# Field item object 
+# Field item object
 class OPWVaultItemField {
     [string]        $id
 	[OPWVaultItemSection]   $section
 	[string]        $type
 	[string]        $purpose
 	[string]        $label
-	[string]        $value	
+	[string]        $value
 
     OPWVaultItemField(){}
 
     OPWVaultItemField([string] $type,[string] $purpose, [string] $label, [string] $value,[string] $sectionID){
         $this.type = $type
         if("" -ne $purpose){
-            $this.purpose = $purpose    
+            $this.purpose = $purpose
         }
         $this.type = $type
         $this.label = $label
@@ -113,17 +113,17 @@ class OPWVaultItemField {
 }
 
 # OPWVaultItem
-# Main object 
+# Main object
 class OPWVaultItem {
 
-    [string]                $id    
-	[string]                $title 
+    [string]                $id
+	[string]                $title
 	[OPWVaultItemURL]       $urls
 	[bool]                  $favorite
 	[string[]]              $tags
 	[int]                   $version
 	[OPWVault]              $vault
-	[string]                $category 
+	[string]                $category
 	[OPWVaultItemSection[]] $sections
     [OPWVaultItemField[]]   $fields
 	[OPWVaultItemFile[]]    $files
@@ -131,7 +131,7 @@ class OPWVaultItem {
 	[string]                $createdAt
     [string]	            $updatedAt
 
-    # Create OPWVaultItem 
+    # Create OPWVaultItem
     OPWVaultItem([string] $title,[string] $category, [string] $vaultUUID )
     {
         # ToDo: Prüfen
@@ -148,7 +148,7 @@ class OPWVaultItem {
     #Adding a login credential to the vault item
     [void] AddLogin ([string] $name, [string] $pw)
     {
-        $username = [OPWVaultItemField]::New() 
+        $username = [OPWVaultItemField]::New()
         $username.value = $name
         $username.purpose = "USERNAME"
         $this.fields = $username
@@ -159,7 +159,7 @@ class OPWVaultItem {
         $this.fields += $password
 
     }
-    # Adding text to the vault entry without selection ID  
+    # Adding text to the vault entry without selection ID
     [void] AddText ([string] $label, [string] $text){
 
         $field = [OPWVaultItemField]::New("STRING", "", $label, $text, "" )
@@ -180,6 +180,6 @@ class OPWVaultItem {
         $this.sections += $section
         return $section.id
     }
-    
+
 }
 

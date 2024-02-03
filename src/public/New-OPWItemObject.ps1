@@ -2,19 +2,19 @@ function New-OPWItemObject {
     <#
     .SYNOPSIS
         Create new OPWVaultItem object
-    
+
     .DESCRIPTION
         Create a new OPWVaultItem object
-         
+
     .NOTES
         Author:      Steven Knight
         Contact:     @StevenKnight
         Created:     2023-01-01
-        Updated:     
-    
+        Updated:
+
         Version history:
         1.0.0 - (2023-01-01) Function created
-    #>  
+    #>
     # Parameter help description
     param(
         [parameter(Mandatory = $true)]
@@ -35,8 +35,8 @@ function New-OPWItemObject {
         $VerbosePreference = 'Continue'
         $PSFN = "[$($MyInvocation.MyCommand)] "
     }
-    
+
     $opwv = [OPWVaultItem]::New($Title, $Category, $VaultUUID)
-    Write-Debug ("$($PSFN) Create new OPWVaultItem Object") 
+    Write-Debug ("$($PSFN) Create new OPWVaultItem Object")
     return [OPWVaultItem] $opwv
 }

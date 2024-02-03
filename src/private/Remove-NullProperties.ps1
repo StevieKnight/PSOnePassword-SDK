@@ -3,7 +3,7 @@ function Remove-NullProperties {
     .SYNOPSIS
         Removes null properties from an object.
     .DESCRIPTION
-        This function recursively removes all null properties from a PowerShell object. 
+        This function recursively removes all null properties from a PowerShell object.
     .PARAMETER InputObject
         A PowerShell Object from which to remove null properties.
     .EXAMPLE
@@ -20,27 +20,27 @@ function Remove-NullProperties {
             $object
             return
         }
-        
+
         $NewObject = @{ }
         $NewArray = @()
-        
+
         $PropertyList = $object.PSObject.Properties | Where-Object { $null -ne $_.Value }
         foreach ($Property in $PropertyList) {
             if ($Property.Value -is [array]) {
                 $NewArray += Remove-NullProperties $Property.Value
                 if ($NewArray.Count -cgt 0){
-                    $NewObject[$Property.Name] = $NewArray    
+                    $NewObject[$Property.Name] = $NewArray
                 }
                 $NewArray = @()
             }
             else {
                 $NewObject[$Property.Name] = Remove-NullProperties $Property.Value
             }
-                
+
         }
-          
-        [PSCustomObject]$NewObject 
-    } 
+
+        [PSCustomObject]$NewObject
+    }
 
 }
 

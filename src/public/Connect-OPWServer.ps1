@@ -2,11 +2,11 @@ function Connect-OPWServer {
     <#
       .SYNOPSIS
           Connect to our 1 Password connection server
-      
+
       .DESCRIPTION
           Connect to your 1-password connection server and check if the connection can be established.
           Host and Authtoken save in environment for other function.
-      
+
       .PARAMETER ConnectionHost
           The Hostname or IP-Adresse from your 1-password connection server
 
@@ -15,17 +15,17 @@ function Connect-OPWServer {
 
       .PARAMETER Title
           Search title in the vault. The title must be searched for exactly as it appears in the vault.
-      
-      
+
+
       .NOTES
           Author:      Steven Knight
           Contact:     @StevenKnight
           Created:     2023-01-01
-          Updated:     
-      
+          Updated:
+
           Version history:
           1.0.0 - (2023-01-01) Function created
-      #>   
+      #>
     [Cmdletbinding()]
 
     param (
@@ -37,9 +37,9 @@ function Connect-OPWServer {
       [ValidatePattern('^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$')]
       [string]$BearerToken
 
-        
+
     )
-      
+
     If ($PSBoundParameters['Debug']) {
       $DebugPreference = 'Continue'
       $VerbosePreference = 'Continue'
@@ -52,19 +52,19 @@ function Connect-OPWServer {
     $opwr = New-Object -Type OPWRespons
 
     $authToken = @{ 'ContentType' = 'application/json'
-      'Authorization'             = 'Bearer ' + $BearerToken 
+      'Authorization'             = 'Bearer ' + $BearerToken
     }
-        
-    #Save OPW Host and AuthToken in the environment. 
+
+    #Save OPW Host and AuthToken in the environment.
     New-Variable -Name OpwHost -Scope Global -Value $ConnectionHost -Force:$True
     Write-Debug "$($PSFN)Set OPWHost as globle variable"
     New-Variable -Name OpwAuthToken -Scope Global -Value $authToken -Force:$True
     Write-Debug "$($PSFN)Set OPWAuthToken as globle variable"
-   
+
     # Get vaults because the heartbeat or health no need beare token for request
     $uri = "https://$($global:OpwHost)/v1/vaults"
-      
-    #Action 
+
+    #Action
     try {
       $respons = Invoke-RestMethod -Method GET -Uri $uri -Headers $authToken
     }
@@ -75,12 +75,12 @@ function Connect-OPWServer {
       Write-Debug ("$($PSFN)Status: $($opwr.status): $($opwr.message) $($opwr.payload)")
       return $opwr
     }
-      
+
     if ($null -ne $respons) {
       $opwr.message = 'Service reachable'
       Write-Debug ("$($PSFN)Status: $($opwr.status): $($opwr.message) $($opwr.payload)")
       return $opwr
-          
+
     }
     else {
       $opwr.status = '500'
